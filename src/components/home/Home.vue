@@ -6,20 +6,29 @@
       <thead>
         <tr>
           <th>Nome</th>
-          <th>Ações</th>
+          <th class="text-end">
+            <Botao
+              tipo="button"
+              @botaoAtivado="remove($event, foto)"
+              estilo="btn-success"
+              icone="bi bi-plus"
+              rotulo="a"
+              link="cadastrarLista"
+            />
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="invenctory of invenctorysComFiltro">
           <td>{{ invenctory.title }}</td>
-          <td>
+          <td class="text-end">
             <Botao
               tipo="button"
               @botaoAtivado="remove($event, foto)"
               estilo="btn-primary"
               icone="bi bi-eye"
               rotulo="a"
-              link=""
+              link="list"
               :id="invenctory.id"
               :invenctory="invenctory"
             />

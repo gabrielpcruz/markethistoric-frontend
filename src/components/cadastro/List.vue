@@ -8,13 +8,13 @@
       <thead>
       <tr>
         <th>Nome</th>
-        <th>No carrinho</th>
+        <th class="text-end">No carrinho</th>
       </tr>
       </thead>
       <tbody>
         <tr v-for="info of invenctory_product">
           <td>{{ info.product_name }}</td>
-          <td>
+          <td class="text-end">
             {{ info.checked }}
           </td>
         </tr>
@@ -33,7 +33,6 @@ export default {
 
   data() {
     return {
-      invenctory: {},
       invenctory_product: [],
     }
   },

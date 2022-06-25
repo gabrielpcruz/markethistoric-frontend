@@ -1,7 +1,7 @@
 <template>
   <a
     @click="$router.push({
-        name: 'list',
+        name: link,
         params: {
           id: id,
           invenctory
@@ -32,19 +32,10 @@ export default {
     icone: String,
     id: Number,
     invenctory: Object,
+    link: String
   },
   methods: {
-    // disparaAcao() {
-    //   if (this.confirmacao) {
-    //     if (confirm("Confirma operação?")) {
-    //       this.$emit('botaoAtivado', "Um mais um é igual a dois");
-    //     }
-    //
-    //     return;
-    //   }
-    //
-    //   this.$emit('botaoAtivado', "Um mais um é igual a dois");
-    // }
+
   },
   computed: {
     estiloDoBotao() {
