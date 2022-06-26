@@ -1,12 +1,6 @@
 <template>
   <a
-    @click="$router.push({
-        name: link,
-        params: {
-          id: id,
-          invenctory
-        }
-      })"
+    @click="metodoBotao"
     class="btn"
     :class="estiloDoBotao"
   >
@@ -35,7 +29,19 @@ export default {
     link: String
   },
   methods: {
-
+    metodoBotao() {
+      if (this.link) {
+        this.$router.push({
+          name: this.link,
+          params: {
+            id: this.id,
+            invenctory: this.invenctory
+          }
+        })
+      } else {
+        this.$emit('metodoBotao', this.invenctory);
+      }
+    },
   },
   computed: {
     estiloDoBotao() {
@@ -45,14 +51,6 @@ export default {
 
       return this.estilo;
     },
-
-    iconeDoBotao() {
-      if (!this.icone) {
-        return 'btn-primary';
-      }
-
-      return this.icone;
-    }
   }
 }
 </script>

@@ -33,7 +33,7 @@
     </table>
 
     <div class="d-grid gap-2 mb-5">
-      <button type="button" class="btn btn-warning">Cancelar</button>
+      <button @click="$router.push('/')" type="button" class="btn btn-warning">Cancelar</button>
       <button @click="salvar" type="button" class="btn btn-primary">Salvar</button>
     </div>
   </div>
@@ -61,26 +61,17 @@ export default {
       const listName = this.listName;
       const selecionados = this.selecionados;
 
-      const listObject = {
+      axios.post('http://localhost:8081/v1/invenctory', {
         name: listName,
         products: selecionados
-      }
-
-      console.log(listObject)
-
-      axios.post('http://localhost:8081/v1/invenctory', listObject)
-        .then(invenctoryCreated => console.log(invenctoryCreated));
-
-      this.$router.replace('/')
+      })
+        .then(() => this.$router.replace('/'));
     }
   },
 
   created() {
-    let productsPromisse = this.$http.get(`http://localhost:8081/v1/product`);
-
-    productsPromisse
-      .then(res => res.json())
-      .then(product_list => this.product_list = product_list);
+    axios.get(`http://localhost:8081/v1/product`)
+      .then(product_list => this.product_list = product_list.data);
   },
 }
 </script>

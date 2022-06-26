@@ -27,7 +27,11 @@
 export default {
   props: {
     id: Number,
-    invenctory: Object
+    invenctory: Object,
+
+    info: {
+      product_name : String
+    }
   },
   name: "List",
 
