@@ -12,12 +12,14 @@
       </tr>
       </thead>
       <tbody>
-        <tr v-for="info of invenctory_product">
-          <td>{{ info.product_name }}</td>
-          <td class="text-end">
-            <i @dblclick="addRemoveCart(info)" class="bi" :class="noCarrinho(info.checked)"></i>
-          </td>
-        </tr>
+      <tr v-for="info of invenctory_product">
+        <td>{{ info.product_name }}</td>
+        <td class="text-end">
+          <button @click="addRemoveCart(info)" class="btn" :class="noCarrinhoBotao(info.checked)">
+            <i class="bi" :class="noCarrinho(info.checked)"></i>
+          </button>
+        </td>
+      </tr>
       </tbody>
     </table>
   </div>
@@ -32,7 +34,7 @@ export default {
     invenctory: Object,
 
     info: {
-      product_name : String
+      product_name: String
     }
   },
   name: "List",
@@ -47,25 +49,58 @@ export default {
     noCarrinho(isOnCart) {
       return parseInt(isOnCart) ? 'bi-cart-check-fill' : 'bi-cart';
     },
+
+    noCarrinhoBotao(isOnCart) {
+      return parseInt(isOnCart) ? 'btn-secondary' : 'btn-light';
+    },
+
     addRemoveCart(inventory_product) {
+      const index = this.invenctory_product.indexOf(inventory_product);
+      const isOnCart = this.invenctory_product[index].checked;
 
-      const isOnCart = inventory_product.checked;
-
-      if (isOnCart) {
+      if (parseInt(isOnCart) !== 1) {
         axios.put(`http://localhost:8081/v1/invenctory/cart/${inventory_product.id}`)
           .then(() => {
-            this.invenctory_product.indexOf(inventory_product);
+            const index = this.invenctory_product.indexOf(inventory_product);
+            this.invenctory_product[index].checked = 1;
+
+            this.sortByCart();
           });
       } else {
         axios.delete(`http://localhost:8081/v1/invenctory/cart/${inventory_product.id}`)
-          .then(() => this.$router.replace('/'));
+          .then(() => {
+            const index = this.invenctory_product.indexOf(inventory_product);
+            this.invenctory_product[index].checked = 0;
+
+            this.sortByCart();
+          });
       }
+    },
+
+    sortByCart() {
+      this.invenctory_product.sort((a, b) => {
+        if (parseInt(a.checked) === 1 && parseInt(b.checked) === 0) {
+          return 1
+        }
+
+        if (parseInt(a.checked) === 0 && parseInt(b.checked) === 1) {
+          return -1
+        }
+
+        if (parseInt(a.checked) === 1 && parseInt(b.checked) === 1) {
+          return 0
+        }
+      });
     }
   },
 
   created() {
     axios.get(`http://localhost:8081/v1/invenctory/${this.id}/list`)
-      .then(invenctory_product => this.invenctory_product = invenctory_product.data);
+      .then(invenctory_product => {
+        this.invenctory_product = invenctory_product.data;
+
+        this.sortByCart();
+      });
   }
 }
 </script>
