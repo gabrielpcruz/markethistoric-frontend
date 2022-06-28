@@ -34,20 +34,21 @@
 
           <Botao
             tipo="button"
-            @metodoBotao="deletar($event, invenctory)"
-            estilo="btn-danger"
-            icone="bi bi-trash"
-            rotulo="deletar"
+            @metodoBotao="atualizar($event, invenctory)"
+            estilo="btn-warning"
+            icone="bi bi-pencil-square"
+            rotulo="atualizar"
+            link="edit"
             :id="invenctory.id"
             :invenctory="invenctory"
           />
 
           <Botao
             tipo="button"
-            @botaoAtivado="remove($event, foto)"
-            estilo="btn-warning"
-            icone="bi bi-pencil-square"
-            rotulo="atualizar"
+            @metodoBotao="deletar($event, invenctory)"
+            estilo="btn-danger"
+            icone="bi bi-trash"
+            rotulo="deletar"
             :id="invenctory.id"
             :invenctory="invenctory"
           />
@@ -104,6 +105,10 @@ export default {
         this.invenctorys.indexOf(invenctory),
         1
       );
+    },
+
+    atualizar(dados, invenctory) {
+      console.log(invenctory)
     }
   },
 

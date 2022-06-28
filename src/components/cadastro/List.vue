@@ -15,7 +15,7 @@
         <tr v-for="info of invenctory_product">
           <td>{{ info.product_name }}</td>
           <td class="text-end">
-            {{ info.checked }}
+            <i @dblclick="addRemoveCart(info)" class="bi" :class="noCarrinho(info.checked)"></i>
           </td>
         </tr>
       </tbody>
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   props: {
     id: Number,
@@ -41,12 +43,29 @@ export default {
     }
   },
 
-  created() {
-    let productsPromisse = this.$http.get(`http://localhost:8081/v1/invenctory/${this.id}/list`);
+  methods: {
+    noCarrinho(isOnCart) {
+      return parseInt(isOnCart) ? 'bi-cart-check-fill' : 'bi-cart';
+    },
+    addRemoveCart(inventory_product) {
 
-    productsPromisse
-      .then(res => res.json())
-      .then(invenctory_product => this.invenctory_product = invenctory_product);
+      const isOnCart = inventory_product.checked;
+
+      if (isOnCart) {
+        axios.put(`http://localhost:8081/v1/invenctory/cart/${inventory_product.id}`)
+          .then(() => {
+            this.invenctory_product.indexOf(inventory_product);
+          });
+      } else {
+        axios.delete(`http://localhost:8081/v1/invenctory/cart/${inventory_product.id}`)
+          .then(() => this.$router.replace('/'));
+      }
+    }
+  },
+
+  created() {
+    axios.get(`http://localhost:8081/v1/invenctory/${this.id}/list`)
+      .then(invenctory_product => this.invenctory_product = invenctory_product.data);
   }
 }
 </script>
