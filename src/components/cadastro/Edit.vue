@@ -9,7 +9,7 @@
       <input class="form-control" v-model="listName" id="nomelista" type="text" placeholder="Nome da Lista">
     </div>
     <hr>
-    <table class="table table-striped">
+    <table class="table table-striped table-hover">
       <thead>
       <tr>
         <th>Produto</th>
@@ -66,9 +66,6 @@ export default {
       const listName = this.listName;
       const selecionados = this.selecionados;
 
-      console.log(listName)
-      console.log(selecionados)
-
       axios.put(`http://localhost:8081/v1/invenctory/${this.id}`, {
         name: listName,
         products: selecionados
@@ -86,7 +83,7 @@ export default {
         this.invenctory_products = invenctory_products.data;
 
         this.invenctory_products.forEach((product_inventory) => {
-          this.selecionados.push(parseInt(product_inventory.product_entity_id));
+          this.selecionados.push(parseInt(product_inventory.product_id));
         }, this);
 
       });

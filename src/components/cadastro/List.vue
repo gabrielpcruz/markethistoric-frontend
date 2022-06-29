@@ -4,7 +4,7 @@
       {{ invenctory.title }}
     </h1>
 
-    <table class="table table-striped">
+    <table class="table table-striped table-hover">
       <thead>
       <tr>
         <th>Nome</th>
@@ -13,7 +13,12 @@
       </thead>
       <tbody>
       <tr v-for="info of invenctory_product">
-        <td>{{ info.product_name }}</td>
+        <td>
+          <span @click="exibirModal(info)">
+            {{ info.product_name }}
+          </span>
+
+        </td>
         <td class="text-end">
           <button @click="addRemoveCart(info)" class="btn" :class="noCarrinhoBotao(info.checked)">
             <i class="bi" :class="noCarrinho(info.checked)"></i>
@@ -22,13 +27,21 @@
       </tr>
       </tbody>
     </table>
+
+    <Modal/>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import History from "../shared/history/History";
+import Modal from "../shared/modal/Modal";
 
 export default {
+  components: {
+    History,
+    Modal,
+  },
   props: {
     id: Number,
     invenctory: Object,
@@ -91,6 +104,10 @@ export default {
           return 0
         }
       });
+    },
+
+    exibirModal(info) {
+
     }
   },
 

@@ -9,7 +9,7 @@
       <input class="form-control" v-model="listName" id="nomelista" type="text" placeholder="Nome da Lista">
     </div>
     <hr>
-    <table class="table table-striped">
+    <table class="table table-striped table-hover">
       <thead>
       <tr>
         <th>Produto</th>
