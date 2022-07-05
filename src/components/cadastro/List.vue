@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div id="modal"></div>
     <h1 class="centralizado" v-if="invenctory">
       {{ invenctory.title }}
     </h1>
@@ -14,10 +15,16 @@
       <tbody>
       <tr v-for="info of invenctory_product">
         <td>
-          <span @click="exibirModal(info)">
+          <span @dblclick="$bvModal.show('modal_' + info.product_id)">
             {{ info.product_name }}
-          </span>
 
+            <History
+              :id="'button_' + info.product_id"
+              :product_name="info.product_name"
+              :product_id="parseInt(info.product_id)">
+            </History>
+
+          </span>
         </td>
         <td class="text-end">
           <button @click="addRemoveCart(info)" class="btn" :class="noCarrinhoBotao(info.checked)">
@@ -36,6 +43,7 @@
 import axios from "axios";
 import History from "../shared/history/History";
 import Modal from "../shared/modal/Modal";
+import Vue from "vue";
 
 export default {
   components: {
@@ -70,54 +78,30 @@ export default {
     addRemoveCart(inventory_product) {
       const index = this.invenctory_product.indexOf(inventory_product);
       const isOnCart = this.invenctory_product[index].checked;
-
       if (parseInt(isOnCart) !== 1) {
         axios.put(`http://localhost:8081/v1/invenctory/cart/${inventory_product.id}`)
           .then(() => {
-            const index = this.invenctory_product.indexOf(inventory_product);
-            this.invenctory_product[index].checked = 1;
-
-            this.sortByCart();
+            this.list()
           });
       } else {
         axios.delete(`http://localhost:8081/v1/invenctory/cart/${inventory_product.id}`)
           .then(() => {
-            const index = this.invenctory_product.indexOf(inventory_product);
-            this.invenctory_product[index].checked = 0;
-
-            this.sortByCart();
+            this.list()
           });
       }
     },
 
-    sortByCart() {
-      this.invenctory_product.sort((a, b) => {
-        if (parseInt(a.checked) === 1 && parseInt(b.checked) === 0) {
-          return 1
-        }
-
-        if (parseInt(a.checked) === 0 && parseInt(b.checked) === 1) {
-          return -1
-        }
-
-        if (parseInt(a.checked) === 1 && parseInt(b.checked) === 1) {
-          return 0
-        }
-      });
+    list() {
+      axios.get(`http://localhost:8081/v1/invenctory/${this.id}/list`)
+        .then(invenctory_product => {
+          this.invenctory_product = [];
+          this.invenctory_product = invenctory_product.data;
+        });
     },
-
-    exibirModal(info) {
-
-    }
   },
 
   created() {
-    axios.get(`http://localhost:8081/v1/invenctory/${this.id}/list`)
-      .then(invenctory_product => {
-        this.invenctory_product = invenctory_product.data;
-
-        this.sortByCart();
-      });
+    this.list()
   }
 }
 </script>
