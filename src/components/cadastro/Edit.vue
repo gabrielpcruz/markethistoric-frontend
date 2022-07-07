@@ -40,7 +40,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import InvenctoryService from "../../domain/InvenctoryService";
+import ProductService from "../../domain/ProductService";
 
 export default {
   props: {
@@ -66,19 +67,22 @@ export default {
       const listName = this.listName;
       const selecionados = this.selecionados;
 
-      axios.put(`http://localhost:8081/v1/invenctory/${this.id}`, {
+      this.inventoryService.update(this.id, {
         name: listName,
         products: selecionados
-      })
-        .then(() => this.$router.replace('/'));
+      }).then(() => this.$router.replace('/'));
     }
   },
 
   created() {
-    axios.get(`http://localhost:8081/v1/invenctory/${this.id}`)
-      .then(invenctory => this.listName = invenctory.data.title);
+    this.inventoryService = new InvenctoryService(this.$resource);
+    this.productService = new ProductService(this.$resource);
 
-    axios.get(`http://localhost:8081/v1/invenctory/${this.id}/list`)
+
+    this.inventoryService.get(this.id)
+      .then(invenctory => this.listName = invenctory.data.title)
+
+    this.inventoryService.details(this.id)
       .then(invenctory_products => {
         this.invenctory_products = invenctory_products.data;
 
@@ -88,7 +92,8 @@ export default {
 
       });
 
-    axios.get(`http://localhost:8081/v1/product`)
+    this.productService
+      .lista()
       .then(product_list => this.product_list = product_list.data);
   },
 }

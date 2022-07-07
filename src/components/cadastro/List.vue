@@ -15,7 +15,7 @@
       <tbody>
       <tr v-for="info of invenctory_product">
         <td>
-          <span @dblclick="$bvModal.show('modal_' + info.product_id)">
+          <span @click="$bvModal.show('modal_' + info.product_id)">
             {{ info.product_name }}
 
             <History
@@ -44,6 +44,8 @@ import axios from "axios";
 import History from "../shared/history/History";
 import Modal from "../shared/modal/Modal";
 import Vue from "vue";
+import InvenctoryService from "../../domain/InvenctoryService";
+import CartService from "../../domain/CartService";
 
 export default {
   components: {
@@ -78,29 +80,27 @@ export default {
     addRemoveCart(inventory_product) {
       const index = this.invenctory_product.indexOf(inventory_product);
       const isOnCart = this.invenctory_product[index].checked;
+
+
       if (parseInt(isOnCart) !== 1) {
-        axios.put(`http://localhost:8081/v1/invenctory/cart/${inventory_product.id}`)
-          .then(() => {
-            this.list()
-          });
+        this.cartService.put(inventory_product.id)
+          .then(() => this.list())
       } else {
-        axios.delete(`http://localhost:8081/v1/invenctory/cart/${inventory_product.id}`)
-          .then(() => {
-            this.list()
-          });
+        this.cartService.remove(inventory_product.id)
+          .then(() => this.list())
       }
     },
 
     list() {
-      axios.get(`http://localhost:8081/v1/invenctory/${this.id}/list`)
-        .then(invenctory_product => {
-          this.invenctory_product = [];
-          this.invenctory_product = invenctory_product.data;
-        });
+      this.inventoryService.details(this.id)
+        .then(invenctory_product => this.invenctory_product = invenctory_product.data);
     },
   },
 
   created() {
+    this.inventoryService = new InvenctoryService(this.$resource);
+    this.cartService = new CartService(this.$resource);
+
     this.list()
   }
 }

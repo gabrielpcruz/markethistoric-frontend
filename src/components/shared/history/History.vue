@@ -77,7 +77,7 @@ export default {
   },
 
   created() {
-    axios.get(`http://localhost:8081/v1/product/${this.product_id}/history`)
+    axios.get(`http://192.168.101.3:8081/v1/product/${this.product_id}/history`)
       .then(product_history => {
         this.product_history = product_history.data;
         console.log(this.product_history)

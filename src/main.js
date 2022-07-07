@@ -9,6 +9,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(VueResource);
+Vue.http.options.root = 'http://localhost:8081';
+
 Vue.use(VueRouter);
 
 

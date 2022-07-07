@@ -41,6 +41,8 @@
 
 <script>
 import axios from "axios";
+import ProductService from "../../domain/ProductService";
+import InvenctoryService from "../../domain/InvenctoryService";
 
 export default {
   props: {
@@ -61,17 +63,24 @@ export default {
       const listName = this.listName;
       const selecionados = this.selecionados;
 
-      axios.post('http://localhost:8081/v1/invenctory', {
+      this.inventoryService.add({
         name: listName,
         products: selecionados
-      })
-        .then(() => this.$router.replace('/'));
+      }).then(() => this.$router.replace('/'));
+    },
+
+    listar() {
+      this.productService
+        .lista()
+        .then(product_list => this.product_list = product_list.data);
     }
   },
 
   created() {
-    axios.get(`http://localhost:8081/v1/product`)
-      .then(product_list => this.product_list = product_list.data);
+    this.productService = new ProductService(this.$resource);
+    this.inventoryService = new InvenctoryService(this.$resource);
+
+    this.listar();
   },
 }
 </script>

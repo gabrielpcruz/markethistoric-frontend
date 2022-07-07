@@ -63,6 +63,8 @@
 
 import Botao from "../shared/botao/Botao";
 import axios from "axios";
+import ProductService from "../../domain/ProductService";
+import InvenctoryService from "../../domain/InvenctoryService";
 
 export default {
   props: {
@@ -93,26 +95,24 @@ export default {
   },
   methods: {
     loadListas() {
-
-      axios.get('http://localhost:8081/v1/invenctory')
+      this.service
+        .lista()
         .then(invenctorys => this.invenctorys = invenctorys.data);
     },
 
     deletar(dados, invenctory) {
-      axios.delete(`http://localhost:8081/v1/invenctory/${invenctory.id}`);
-
-      this.invenctorys.splice(
-        this.invenctorys.indexOf(invenctory),
-        1
-      );
-    },
-
-    atualizar(dados, invenctory) {
-      console.log(invenctory)
+      this.service.delete(invenctory.id).then(() => {
+        this.invenctorys.splice(
+          this.invenctorys.indexOf(invenctory),
+          1
+        );
+      })
     }
   },
 
   created() {
+    this.service = new InvenctoryService(this.$resource)
+
     this.loadListas();
   }
 }
