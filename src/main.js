@@ -17,12 +17,12 @@ Vue.use(VueRouter);
 Vue.use(BootstrapVue)
 
 const router = new VueRouter({
-  routes,
-  mode: "history"
+    routes,
+    mode: "history"
 });
 
 new Vue({
-  el: '#app',
-  router,
-  render: h => h(App)
+    el: '#app',
+    router,
+    render: h => h(App)
 })
