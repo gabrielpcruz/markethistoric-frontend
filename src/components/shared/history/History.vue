@@ -100,7 +100,6 @@ export default {
                     this.historyPrice = '';
                     this.historyDescription = '';
                 })
-            console.log(history)
         }
     },
     computed: {
