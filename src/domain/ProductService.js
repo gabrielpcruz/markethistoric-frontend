@@ -14,4 +14,15 @@ export default class ProductService {
             action: 'history'
         });
     }
+
+    addHistory(id, history) {
+
+        return this._resource.save({
+            id,
+            action: 'history'
+        }, {
+            price: history.price,
+            description: history.description,
+        });
+    }
 }

@@ -1,9 +1,16 @@
 <template>
 
     <b-modal :id="'modal_' + product_id" :title="product_name">
+        <div class="d-flex justify-content-end mb-3">
+            <div class="input-group">
+                <input v-model="historyDescription" class="form-control" type="text" placeholder="description">
+                <input v-model="historyPrice" class="form-control" type="number" placeholder="R$ 99,99">
+                <button @click="add" class="btn btn-primary">
+                    <i class="bi bi-plus"></i>
+                </button>
+            </div>
+        </div>
         <div class="accordion" id="accordion">
-
-
             <div class="accordion-item" v-for="product of this.product_history">
                 <h2 class="accordion-header" id="headingOne">
                     <button
@@ -24,7 +31,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </b-modal>
 </template>
@@ -50,6 +56,8 @@ export default {
     data() {
         return {
             product_history: [],
+            historyDescription: '',
+            historyPrice: '',
         }
     },
     methods: {
@@ -65,6 +73,34 @@ export default {
                 .then(product_history => {
                     this.product_history = product_history.data;
                 })
+        },
+        add() {
+            const description = this.historyDescription;
+            const price = this.historyPrice;
+
+            const history = {
+                description,
+                price,
+            };
+
+            this.productService.addHistory(this.product_id, history)
+                .then(() => {
+                    this.product_history.unshift({
+                        product_id: this.product_id,
+                        price: history.price,
+                        description: history.description,
+                        data: new Date().toLocaleDateString('pt-BR', {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                        }),
+                        product_name: this.product_name
+                    });
+
+                    this.historyPrice = '';
+                    this.historyDescription = '';
+                })
+            console.log(history)
         }
     },
     computed: {
