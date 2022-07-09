@@ -7,50 +7,44 @@
 
         <table class="table table-striped table-hover">
             <thead>
-            <tr>
-                <th>Nome</th>
-                <th class="text-end">No carrinho</th>
-            </tr>
+                <tr>
+                    <th>Nome</th>
+                    <th class="text-end">No carrinho</th>
+                </tr>
             </thead>
             <tbody>
-            <tr v-for="info of invenctory_product">
-                <td>
-          <span @click="$bvModal.show('modal_' + info.product_id)">
-            {{ info.product_name }}
+                <tr :key="getId()" v-for="info of invenctory_product">
+                    <td>
+                        <span @click="$bvModal.show('modal_' + info.product_id)">
+                            {{ info.product_name }}
 
-            <History
-                :id="'button_' + info.product_id"
-                :product_name="info.product_name"
-                :product_id="parseInt(info.product_id)">
-            </History>
-
-          </span>
-                </td>
-                <td class="text-end">
-                    <button @click="addRemoveCart(info)" class="btn" :class="noCarrinhoBotao(info.checked)">
-                        <i class="bi" :class="noCarrinho(info.checked)"></i>
-                    </button>
-                </td>
-            </tr>
+                            <History
+                                :id="'button_' + info.product_id"
+                                :product_name="info.product_name"
+                                :product_id="parseInt(info.product_id)">
+                            </History>
+                        </span>
+                    </td>
+                    <td class="text-end">
+                        <button @click="addRemoveCart(info)" class="btn" :class="noCarrinhoBotao(info.checked)">
+                            <i class="bi" :class="noCarrinho(info.checked)"></i>
+                        </button>
+                    </td>
+                </tr>
             </tbody>
         </table>
-
-        <Modal/>
     </div>
 </template>
 
 <script>
-import axios from "axios";
 import History from "../shared/history/History";
-import Modal from "../shared/modal/Modal";
-import Vue from "vue";
 import InvenctoryService from "../../domain/InvenctoryService";
 import CartService from "../../domain/CartService";
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
     components: {
         History,
-        Modal,
     },
     props: {
         id: Number,
@@ -89,6 +83,15 @@ export default {
                 this.cartService.remove(inventory_product.id)
                     .then(() => this.list())
             }
+
+            this.$router.replace('/list', {
+                id: this.id,
+                invenctory: this.invenctory
+            })
+        },
+
+        getId() {
+            return uuidv4();
         },
 
         list() {

@@ -18,8 +18,11 @@ export default class InvenctoryService {
 
     update(id, product) {
         return this._resource.update({
-            id
-        }, {product});
+            id,
+        }, {
+            name: product.name,
+            products: product.products
+        });
     }
 
     delete(id) {

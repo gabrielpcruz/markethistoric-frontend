@@ -62,8 +62,6 @@
 <script>
 
 import Botao from "../shared/botao/Botao";
-import axios from "axios";
-import ProductService from "../../domain/ProductService";
 import InvenctoryService from "../../domain/InvenctoryService";
 
 export default {
