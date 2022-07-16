@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(VueResource);
-Vue.http.options.root = 'https://markethistorybackend.gabrielcruz.com.br';
+Vue.http.options.root = 'https://markethistoric.herokuapp.com';
 
 Vue.use(VueRouter);
 
