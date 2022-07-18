@@ -15,15 +15,14 @@
       <tbody>
       <tr v-for="(info, index) of invenctory_product" :key="index">
         <td>
-                        <b-button v-b-modal="'modal_' + info.product_id">
-                            {{ info.product_name }}
-
-                            <History
-                                :id="'button_' + info.product_id"
-                                :product_name="info.product_name"
-                                :product_id="parseInt(info.product_id)">
-                            </History>
-                        </b-button>
+            <b-button v-b-modal="'modal_' + info.product_id">
+                {{ info.product_name }}
+                <History
+                    :id="'button_' + info.product_id"
+                    :product_name="info.product_name"
+                    :product_id="parseInt(info.product_id)">
+                </History>
+            </b-button>
         </td>
         <td class="text-end">
           <button @click="addRemoveCart(info)" class="btn" :class="noCarrinhoBotao(info.checked)">
@@ -44,9 +43,7 @@ import Product from "@/model/product/ProductInterface";
 
 import History from "../shared/history/History.vue";
 import InvenctoryService from "@/domain/InvenctoryService";
-import CartService from "../../domain/CartService.vue";
-import Service from "@/domain/Service";
-import InvenctoryServiceInterface from "@/domain/InventoryServiceInterface";
+import CartService from "@/domain/CartService";
 
 export default defineComponent({
   name: 'ListComponent',
@@ -70,8 +67,8 @@ export default defineComponent({
   data() {
     return {
       invenctory_product: [],
-      cartService: Object,
-      inventoryService: Object as PropType<InvenctoryServiceInterface>,
+      inventoryService: new InvenctoryService(),
+      cartService: new CartService(),
     }
   },
 
@@ -86,8 +83,9 @@ export default defineComponent({
 
     addRemoveCart(inventory_product: Invectory) {
       // const index = this.invenctory_product.indexOf(inventory_product);
-      // const isOnCart = this.invenctory_product[index].checked;
-      //
+      // let a = this.invenctory_product[index] as Invenctory;
+      // const isOnCart = a.checked;
+
       //
       // if (parseInt(isOnCart) !== 1) {
       //   this.cartService.put(inventory_product.id)
@@ -96,8 +94,8 @@ export default defineComponent({
       //   this.cartService.remove(inventory_product.id)
       //       .then(() => this.list())
       // }
-      //
-      // this.$router.replace('/list')
+
+      this.$router.replace('/list');
     },
 
     list() {
@@ -109,13 +107,9 @@ export default defineComponent({
   },
 
   created() {
-    this.inventoryService = new InvenctoryService();
-    this.cartService = new CartService();
-
-    this.list()
+    this.list();
   }
-});
-
+})
 </script>
 
 <style scoped>

@@ -29,9 +29,10 @@ export default defineComponent({
     estilo: String,
     icone: String,
     id: Number,
+
     invenctory: {
       type: Object as PropType<Invectory>,
-      required: true
+      required: false
     },
     link: String
   },

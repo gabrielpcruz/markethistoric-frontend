@@ -1,8 +1,10 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 
 import Service from "@/domain/Service";
 import Invenctory from "@/model/invenctory/InvectoryInterface";
 import InvenctoryServiceInterface from "@/domain/InventoryServiceInterface";
+import {PropType} from "vue";
+import Product from "@/model/product/ProductInterface";
 
 export default class InvenctoryService implements InvenctoryServiceInterface {
     _resource : string;
