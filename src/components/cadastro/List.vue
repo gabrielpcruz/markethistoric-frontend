@@ -13,20 +13,20 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(info, index) of invenctory_product" :key="index">
+      <tr v-for="(invenctory_item, index) of invenctory_product" :key="index">
         <td>
-            <b-button v-b-modal="'modal_' + info.product_id">
-                {{ info.product_name }}
-                <History
-                    :id="'button_' + info.product_id"
-                    :product_name="info.product_name"
-                    :product_id="parseInt(info.product_id)">
-                </History>
-            </b-button>
+          <b-overlay v-b-modal="'button_' + invenctory_item.product_id">
+            {{ invenctory_item.product_name }}
+            <History
+                :id="'button_' + invenctory_item.product_id"
+                :product_name="invenctory_item.product_name"
+                :product_id="parseInt(invenctory_item.product_id)">
+            </History>
+          </b-overlay>
         </td>
         <td class="text-end">
-          <button @click="addRemoveCart(info)" class="btn" :class="noCarrinhoBotao(info.checked)">
-            <i class="bi" :class="noCarrinho(info.checked)"></i>
+          <button @click="addRemoveCart(invenctory_item)" class="btn" :class="noCarrinhoBotao(invenctory_item.checked)">
+            <i class="bi" :class="noCarrinho(invenctory_item.checked)"></i>
           </button>
         </td>
       </tr>
@@ -38,12 +38,14 @@
 <script lang="ts">
 import {defineComponent, PropType} from 'vue';
 
-import Invectory from '@/model/invenctory/InvectoryInterface';
 import Product from "@/model/product/ProductInterface";
-
-import History from "../shared/history/History.vue";
 import InvenctoryService from "@/domain/InvenctoryService";
 import CartService from "@/domain/CartService";
+
+import History from "../shared/history/History.vue";
+import Invenctory from '@/model/invenctory/InvectoryInterface';
+import InvenctoryListItem from '@/model/invenctory/InvectoryListInterface';
+
 
 export default defineComponent({
   name: 'ListComponent',
@@ -56,17 +58,13 @@ export default defineComponent({
       required: true
     },
     invenctory: {
-      type: Object as PropType<Invectory>,
+      type: Object as PropType<Invenctory>,
       required: true
     },
-    info: {
-      type: Object as PropType<Product>,
-      required: true
-    }
   },
   data() {
     return {
-      invenctory_product: [],
+      invenctory_product: [] as InvenctoryListItem[],
       inventoryService: new InvenctoryService(),
       cartService: new CartService(),
     }
@@ -81,19 +79,21 @@ export default defineComponent({
       return parseInt(isOnCart) ? 'btn-secondary' : 'btn-light';
     },
 
-    addRemoveCart(inventory_product: Invectory) {
-      // const index = this.invenctory_product.indexOf(inventory_product);
-      // let a = this.invenctory_product[index] as Invenctory;
-      // const isOnCart = a.checked;
+    addRemoveCart(inventory_product: InvenctoryListItem) {
 
-      //
-      // if (parseInt(isOnCart) !== 1) {
-      //   this.cartService.put(inventory_product.id)
-      //       .then(() => this.list())
-      // } else {
-      //   this.cartService.remove(inventory_product.id)
-      //       .then(() => this.list())
-      // }
+      const index = this.invenctory_product.indexOf(inventory_product);
+      let a = this.invenctory_product[index];
+
+      const isOnCart = a.checked;
+
+
+      if (parseInt(isOnCart) !== 1) {
+        this.cartService.put(inventory_product.id)
+            .then(() => this.list())
+      } else {
+        this.cartService.remove(inventory_product.id)
+            .then(() => this.list())
+      }
 
       this.$router.replace('/list');
     },

@@ -1,6 +1,6 @@
 <template>
 
-    <b-modal :id="'modal_' + product_id" :title="product_name">
+    <b-modal :title="product_name">
         <div class="d-flex justify-content-end mb-3">
             <div class="input-group">
                 <input v-model="historyDescription" class="form-control" type="text" placeholder="description">
@@ -39,9 +39,11 @@
 import { defineComponent } from 'vue';
 
 import ProductService from "../../../domain/ProductService";
+import {BModal} from "bootstrap-vue-3";
 
 export default defineComponent({
   name: 'HistoryComponent',
+  components: {BModal},
   props: {
     product_id: {
       type: Number,
