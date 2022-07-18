@@ -1,31 +1,31 @@
 <template>
-    <div class="corpo mt-5">
-        <router-view></router-view>
-    </div>
+  <div class="corpo mt-5">
+    <router-view></router-view>
+  </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
 
-import routes from "./routes";
+export default defineComponent({
+  name: 'App',
+  components: {
+  },
+  data() {
+    return {
 
-export default {
-    data() {
-        return {
-            routes
-        }
     }
-}
+  }
+});
 </script>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-}
-
-.corpo {
-    font-family: Helvetica, sans-serif;
-    margin: 0 auto;
-    width: 96%;
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
 </style>

@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="accordion" id="accordion">
-            <div class="accordion-item" v-for="product of this.product_history">
+            <div class="accordion-item" v-for="(product, index) of this.product_history" :key="index">
                 <h2 class="accordion-header" id="headingOne">
                     <button
                         class="accordion-button collapsed"
@@ -36,87 +36,91 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
+
 import ProductService from "../../../domain/ProductService";
 
-export default {
-    props: {
-        product_id: {
-            type: Number,
-            required: true
-        },
-
-        product_name: String,
-
-        product: {
-            price: Number,
-            description: String,
-            date: Date,
-        }
-    },
-    data() {
-        return {
-            product_history: [],
-            historyDescription: '',
-            historyPrice: '',
-        }
-    },
-    methods: {
-        toMonney(valor) {
-            return (new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-            })).format(valor);
-        },
-
-        loadHistory(id) {
-            this.productService.history(id)
-                .then(product_history => {
-                    this.product_history = product_history.data;
-                })
-        },
-        add() {
-            const description = this.historyDescription;
-            const price = this.historyPrice;
-
-            const history = {
-                description,
-                price,
-            };
-
-            this.productService.addHistory(this.product_id, history)
-                .then(() => {
-                    this.product_history.unshift({
-                        product_id: this.product_id,
-                        price: history.price,
-                        description: history.description,
-                        data: new Date().toLocaleDateString('pt-BR', {
-                            day: "2-digit",
-                            month: "2-digit",
-                            year: "numeric",
-                        }),
-                        product_name: this.product_name
-                    });
-
-                    this.historyPrice = '';
-                    this.historyDescription = '';
-                })
-        }
-    },
-    computed: {
-        estiloDoBotao() {
-            if (!this.estilo) {
-                return 'btn-primary';
-            }
-
-            return this.estilo;
-        },
+export default defineComponent({
+  name: 'HistoryComponent',
+  props: {
+    product_id: {
+      type: Number,
+      required: true
     },
 
-    created() {
-        this.productService = new ProductService(this.$resource);
-        this.loadHistory(this.product_id);
+    product_name: String,
+
+    product: {
+      price: Number,
+      description: String,
+      date: Date,
     }
-}
+  },
+  data() {
+    return {
+      product_history: [],
+      historyDescription: '',
+      historyPrice: '',
+    }
+  },
+  methods: {
+    toMonney(valor) {
+      return (new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      })).format(valor);
+    },
+
+    loadHistory(id) {
+      this.productService.history(id)
+          .then(product_history => {
+            this.product_history = product_history.data;
+          })
+    },
+    add() {
+      const description = this.historyDescription;
+      const price = this.historyPrice;
+
+      const history = {
+        description,
+        price,
+      };
+
+      this.productService.addHistory(this.product_id, history)
+          .then(() => {
+            this.product_history.unshift({
+              product_id: this.product_id,
+              price: history.price,
+              description: history.description,
+              data: new Date().toLocaleDateString('pt-BR', {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              }),
+              product_name: this.product_name
+            });
+
+            this.historyPrice = '';
+            this.historyDescription = '';
+          })
+    }
+  },
+  computed: {
+    estiloDoBotao() {
+      if (!this.estilo) {
+        return 'btn-primary';
+      }
+
+      return this.estilo;
+    },
+  },
+
+  created() {
+    this.productService = new ProductService(this.$resource);
+    this.loadHistory(this.product_id);
+  }
+})
+
 </script>
 
 <style scoped>

@@ -1,7 +1,11 @@
+import axios from "axios";
+
 export default class ProductService {
 
     constructor(resource) {
-        this._resource = resource('v1/product{/id}{/action}');
+        this._resource = 'https://markethistoric.herokuapp.com';
+
+        // this._resource = resource('v1/product{/id}{/action}');
     }
 
     lista() {
@@ -9,10 +13,7 @@ export default class ProductService {
     }
 
     history(id) {
-        return this._resource.get({
-            id,
-            action: 'history'
-        });
+        return axios.get(this._resource + `/v1/product/${id}/history`);
     }
 
     addHistory(id, history) {

@@ -7,7 +7,7 @@
             <tr>
                 <th>Nome</th>
                 <th class="text-end">
-                    <Botao
+                    <BotaoComponent
                         tipo="button"
                         @botaoAtivado="remove($event, foto)"
                         estilo="btn-success"
@@ -19,20 +19,20 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="invenctory of invenctorysComFiltro">
+            <tr v-for="(invenctory, index) of invenctorysComFiltro" :key="index">
                 <td>{{ invenctory.title }}</td>
                 <td class="text-end">
-                    <Botao
+                    <BotaoComponent
                         tipo="button"
                         estilo="btn-primary"
                         icone="bi bi-eye"
                         rotulo="visualizar"
                         link="list"
-                        :id="invenctory.id"
+                        :id="parseInt(invenctory.id)"
                         :invenctory="invenctory"
                     />
 
-                    <Botao
+                    <BotaoComponent
                         tipo="button"
                         @metodoBotao="atualizar($event, invenctory)"
                         estilo="btn-warning"
@@ -43,7 +43,7 @@
                         :invenctory="invenctory"
                     />
 
-                    <Botao
+                    <BotaoComponent
                         tipo="button"
                         @metodoBotao="deletar($event, invenctory)"
                         estilo="btn-danger"
@@ -60,60 +60,63 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
 
-import Botao from "../shared/botao/Botao";
+import BotaoComponent from "../shared/botao/Botao.vue";
 import InvenctoryService from "../../domain/InvenctoryService";
 
-export default {
-    props: {
-        recarregar: Boolean
-    },
-    components: {
-        Botao
-    },
+export default defineComponent({
+  name: 'HomeComponent',
+  props: {
+    recarregar: Boolean
+  },
+  components: {
+    BotaoComponent
+  },
 
-    data() {
-        return {
-            titulo: "Marcket Lists",
-            invenctorys: [],
-            filtro: ''
-        }
-    },
-
-    computed: {
-        invenctorysComFiltro() {
-            if (this.filtro) {
-                let exp = new RegExp(this.filtro.trim(), 'i')
-
-                return this.invenctorys.filter(invenctory => exp.test(invenctory.titulo));
-            } else {
-                return this.invenctorys;
-            }
-        }
-    },
-    methods: {
-        loadListas() {
-            this.service
-                .lista()
-                .then(invenctorys => this.invenctorys = invenctorys.data);
-        },
-
-        deletar(dados, invenctory) {
-            this.service.delete(invenctory.id).then(() => {
-                this.invenctorys.splice(
-                    this.invenctorys.indexOf(invenctory),
-                    1
-                );
-            })
-        }
-    },
-
-    created() {
-        this.service = new InvenctoryService(this.$resource)
-
-        this.loadListas();
+  data() {
+    return {
+      titulo: "Marcket Lists",
+      invenctorys: [],
+      filtro: ''
     }
-}
+  },
+
+  computed: {
+    invenctorysComFiltro() {
+      if (this.filtro) {
+        let exp = new RegExp(this.filtro.trim(), 'i')
+
+        return this.invenctorys.filter(invenctory => exp.test(invenctory.titulo));
+      } else {
+        return this.invenctorys;
+      }
+    }
+  },
+  methods: {
+    loadListas() {
+      this.service
+          .lista()
+          .then(invenctorys => this.invenctorys = invenctorys.data);
+    },
+
+    deletar(dados, invenctory) {
+      this.service.delete(invenctory.id).then(() => {
+        this.invenctorys.splice(
+            this.invenctorys.indexOf(invenctory),
+            1
+        );
+      })
+    }
+  },
+
+  created() {
+    this.service = new InvenctoryService(this.$resource)
+
+    this.loadListas();
+  }
+});
+
 </script>
 
 <style>

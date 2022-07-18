@@ -1,7 +1,9 @@
-export default class CartService {
+import Service from "@/domain/Service";
 
-    constructor(resource) {
-        this._resource = resource('v1/invenctory{/action}{/id}');
+export default class CartService implements Service {
+
+    constructor() {
+        this._resource = 'https://markethistoric.herokuapp.com';
     }
 
     put(inventory_id) {
