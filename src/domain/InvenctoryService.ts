@@ -35,7 +35,7 @@ export default class InvenctoryService implements InvenctoryServiceInterface {
     }
 
     delete(id: number) {
-        // return this._resource.remove({id})
+        return axios.delete(this._resource + `/v1/invenctory/${id}`);
     }
 
     details(id: number) {

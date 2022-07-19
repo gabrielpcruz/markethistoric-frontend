@@ -17,7 +17,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="product of product_list">
+            <tr v-for="(product, index) of product_list" :key="index">
                 <td>{{ product.name }}</td>
                 <td class="text-end">
                     <input
@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import ProductService from "../../domain/ProductService";
 import InvenctoryService from "../../domain/InvenctoryService";
 
@@ -48,13 +47,15 @@ export default {
     props: {
         id: Number,
     },
-    name: "List",
+    name: "AddComponent",
 
     data() {
         return {
             listName: "",
             product_list: [],
-            selecionados: []
+            selecionados: [],
+            inventoryService: new InvenctoryService(),
+            productService: new ProductService(),
         }
     },
 
@@ -77,9 +78,6 @@ export default {
     },
 
     created() {
-        this.productService = new ProductService(this.$resource);
-        this.inventoryService = new InvenctoryService(this.$resource);
-
         this.listar();
     },
 }

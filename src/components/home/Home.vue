@@ -9,7 +9,6 @@
                 <th class="text-end">
                     <BotaoComponent
                         tipo="button"
-                        @botaoAtivado="remove($event, foto)"
                         estilo="btn-success"
                         icone="bi bi-plus"
                         rotulo="a"
@@ -64,7 +63,8 @@
 import { defineComponent } from 'vue';
 
 import BotaoComponent from "../shared/botao/Botao.vue";
-import InvenctoryService from "../../domain/InvenctoryService";
+import InvenctoryService from "@/domain/InvenctoryService";
+import Invenctory from '@/model/invenctory/InvectoryInterface';
 
 export default defineComponent({
   name: 'HomeComponent',
@@ -78,31 +78,26 @@ export default defineComponent({
   data() {
     return {
       titulo: "Marcket Lists",
-      invenctorys: [],
-      filtro: ''
+      invenctorys: [] as Invenctory[],
+      filtro: '',
+      inventoryService: new InvenctoryService(),
     }
   },
 
   computed: {
     invenctorysComFiltro() {
-      if (this.filtro) {
-        let exp = new RegExp(this.filtro.trim(), 'i')
-
-        return this.invenctorys.filter(invenctory => exp.test(invenctory.titulo));
-      } else {
-        return this.invenctorys;
-      }
+      return this.invenctorys;
     }
   },
   methods: {
     loadListas() {
-      this.service
+      this.inventoryService
           .lista()
           .then(invenctorys => this.invenctorys = invenctorys.data);
     },
 
-    deletar(dados, invenctory) {
-      this.service.delete(invenctory.id).then(() => {
+    deletar(dados: any, invenctory: Invenctory) {
+      this.inventoryService.delete(invenctory.id).then(() => {
         this.invenctorys.splice(
             this.invenctorys.indexOf(invenctory),
             1
@@ -112,8 +107,6 @@ export default defineComponent({
   },
 
   created() {
-    this.service = new InvenctoryService(this.$resource)
-
     this.loadListas();
   }
 });
