@@ -1,10 +1,7 @@
 import axios, {AxiosResponse} from "axios";
 
-import Service from "@/domain/Service";
 import Invenctory from "@/model/invenctory/InvectoryInterface";
 import InvenctoryServiceInterface from "@/domain/InventoryServiceInterface";
-import {PropType} from "vue";
-import Product from "@/model/product/ProductInterface";
 
 export default class InvenctoryService implements InvenctoryServiceInterface {
     _resource : string;
@@ -21,17 +18,18 @@ export default class InvenctoryService implements InvenctoryServiceInterface {
         return axios.get(this._resource + `/v1/invenctory`);
     }
 
-    add(inventory: Invenctory) {
-        // return this._resource.save(inventory);
+    add(title: string, products: any) {
+        return axios.post(this._resource + `/v1/invenctory`, {
+            name: title,
+            products: products
+        });
     }
 
-    update(id: number, product: object) {
-        // return this._resource.update({
-        //     id,
-        // }, {
-        //     name: product.name,
-        //     products: product.products
-        // });
+    update(id: number, product: any) {
+        return axios.put(this._resource + `/v1/invenctory/${id}`, {
+            name: product.name,
+            products: product.products
+        });
     }
 
     delete(id: number) {

@@ -1,24 +1,21 @@
 <template>
     <div>
-        <h1 class="centralizado" v-if="listName">
-            {{ listName }}
-        </h1>
 
-        <label for="nomelista">Nome</label>
-        <div class="input-group">
-            <input class="form-control" v-model="listName" id="nomelista" type="text" placeholder="Nome da Lista">
+      <h1 class="form-label centralizado" >{{ listName || 'Digite o nome da lista...' }}</h1>
+      <div class="input-group">
+          <input class="form-control" v-model="listName" id="nomelista" type="text" placeholder="Nome da Lista">
         </div>
         <hr>
         <table class="table table-striped table-hover">
             <thead>
             <tr>
-                <th>Produto</th>
+                <th class="text-start">Produto</th>
                 <th class="text-end">Selecione o produto</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(product, index) of product_list" :key="index">
-                <td>{{ product.name }}</td>
+                <td class="text-start">{{ product.name }}</td>
                 <td class="text-end">
                     <input
                         class="form-check-input"
@@ -64,10 +61,8 @@ export default {
             const listName = this.listName;
             const selecionados = this.selecionados;
 
-            this.inventoryService.add({
-                name: listName,
-                products: selecionados
-            }).then(() => this.$router.replace('/'));
+            this.inventoryService.add(listName, selecionados)
+                .then(() => this.$router.replace('/'));
         },
 
         listar() {

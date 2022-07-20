@@ -27,7 +27,7 @@
                         icone="bi bi-eye"
                         rotulo="visualizar"
                         link="list"
-                        :id="parseInt(invenctory.id)"
+                        :id="invenctory.id"
                         :invenctory="invenctory"
                     />
 

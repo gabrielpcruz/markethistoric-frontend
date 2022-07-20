@@ -1,7 +1,7 @@
 <template>
     <a
         @click="metodoBotao"
-        class="btn"
+        class="btn ms-1"
         :class="estiloDoBotao"
     >
         <i :class="icone"></i>
@@ -34,6 +34,7 @@ export default defineComponent({
       type: Object as PropType<Invectory>,
       required: false
     },
+
     link: String
   },
   methods: {
