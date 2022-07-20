@@ -16,13 +16,9 @@ export default class ProductService {
     }
 
     addHistory(id: number, history: any) {
-
-        // return this._resource.save({
-        //     id,
-        //     action: 'history'
-        // }, {
-        //     price: history.price,
-        //     description: history.description,
-        // });
+        return axios.post(this._resource + `/v1/product/${id}/history`, {
+            price: history.price,
+            description: history.description,
+        });
     }
 }

@@ -1,20 +1,20 @@
 <template>
   <div>
     <div id="modal"></div>
-    <h1 class="centralizado" v-if="invenctory">
-      {{ invenctory.title }}
+    <h1 class="centralizado" v-if="invenctory_title">
+      {{ invenctory_title }}
     </h1>
 
     <table class="table table-striped table-hover">
       <thead>
       <tr>
-        <th>Nome</th>
+        <th class="text-start">Nome</th>
         <th class="text-end">No carrinho</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(invenctory_item, index) of invenctory_product" :key="index">
-        <td>
+      <tr v-for="invenctory_item of invenctory_product" :key="invenctory_item.id">
+        <td class="text-start">
           <b-overlay v-b-modal="'button_' + invenctory_item.product_id">
             {{ invenctory_item.product_name }}
             <History
@@ -36,16 +36,13 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
+import { defineComponent } from 'vue';
 
-import Product from "@/model/product/ProductInterface";
 import InvenctoryService from "@/domain/InvenctoryService";
 import CartService from "@/domain/CartService";
 
 import History from "../shared/history/History.vue";
-import Invenctory from '@/model/invenctory/InvectoryInterface';
 import InvenctoryListItem from '@/model/invenctory/InvectoryListInterface';
-
 
 export default defineComponent({
   name: 'ListComponent',
@@ -55,11 +52,11 @@ export default defineComponent({
   props: {
     id: {
       type: String,
-      required: true
+      required: false
     },
-    invenctory: {
-      type: Object as PropType<Invenctory>,
-      required: true
+    title: {
+      type: String,
+      required: false
     },
   },
   data() {
@@ -67,6 +64,8 @@ export default defineComponent({
       invenctory_product: [] as InvenctoryListItem[],
       inventoryService: new InvenctoryService(),
       cartService: new CartService(),
+      invenctory_id: this.id || '0',
+      invenctory_title: this.title || ''
     }
   },
 
@@ -80,12 +79,10 @@ export default defineComponent({
     },
 
     addRemoveCart(inventory_product: InvenctoryListItem) {
-
       const index = this.invenctory_product.indexOf(inventory_product);
-      let a = this.invenctory_product[index];
+      let invenctory = this.invenctory_product[index];
 
-      const isOnCart = a.checked;
-
+      const isOnCart = invenctory.checked;
 
       if (parseInt(isOnCart) !== 1) {
         this.cartService.put(inventory_product.id)
@@ -99,7 +96,7 @@ export default defineComponent({
     },
 
     list() {
-      const id = parseInt(this.id);
+      const id = parseInt(this.invenctory_id);
 
       this.inventoryService.details(id)
           .then((data: any) => this.invenctory_product = data.data);

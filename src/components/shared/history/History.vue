@@ -10,28 +10,12 @@
                 </button>
             </div>
         </div>
-        <div class="accordion" id="accordion">
-            <div class="accordion-item" v-for="(product, index) of this.product_history" :key="index">
-                <h2 class="accordion-header" id="headingOne">
-                    <button
-                        class="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        :data-bs-target="'#collapse_' + product.id"
-                        aria-expanded="false"
-                        :aria-controls="'#collapse_' + product.id"
-                    >
-                        {{ product.data }} - {{ toMonney(product.price) }}
-                    </button>
-                </h2>
-                <div :id="'collapse_' + product.id" class="accordion-collapse collapse" aria-labelledby="headingOne"
-                     data-bs-parent="#accordion">
-                    <div class="accordion-body">
-                        {{ product.description }}
-                    </div>
-                </div>
-            </div>
-        </div>
+        <b-accordion>
+            <b-accordion-item :title="product.data + ' - ' + this.toMonney(product.price)" v-for="(product, index) of this.product_history" :key="index">
+
+              {{ product.description }}
+            </b-accordion-item>
+        </b-accordion>
     </b-modal>
 </template>
 
@@ -63,7 +47,17 @@ export default defineComponent({
       product_history: [],
       historyDescription: '',
       historyPrice: '',
+      productService: new ProductService()
     }
+  },
+  computed: {
+    estiloDoBotao() {
+      if (!this.estilo) {
+        return 'btn-primary';
+      }
+
+      return this.estilo;
+    },
   },
   methods: {
     toMonney(valor) {
@@ -107,18 +101,8 @@ export default defineComponent({
           })
     }
   },
-  computed: {
-    estiloDoBotao() {
-      if (!this.estilo) {
-        return 'btn-primary';
-      }
-
-      return this.estilo;
-    },
-  },
 
   created() {
-    this.productService = new ProductService(this.$resource);
     this.loadHistory(this.product_id);
   }
 })

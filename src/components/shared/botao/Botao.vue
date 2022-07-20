@@ -43,7 +43,8 @@ export default defineComponent({
         this.$router.push({
           name: this.link,
           params: {
-            id: this.id
+            id: this.id,
+            title: this.invenctory?.title
           }
         })
       } else {
