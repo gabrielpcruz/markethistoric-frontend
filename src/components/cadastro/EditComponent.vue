@@ -14,7 +14,7 @@
             </thead>
             <tbody>
             <tr v-for="product of product_list" :key="product.id">
-                <td>{{ product.name }}</td>
+                <td class="text-start">{{ product.name }}</td>
                 <td class="text-end">
                     <input
                         class="form-check-input"
