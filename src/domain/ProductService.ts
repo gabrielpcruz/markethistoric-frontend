@@ -1,10 +1,12 @@
 import axios from "axios";
+import Service from "@/domain/Service";
+import ProductHistoryInterface from "@/model/product/ProductHistoryInterface";
 
 export default class ProductService {
     private readonly _resource: string;
 
     constructor() {
-        this._resource = 'https://markethistoric.herokuapp.com';
+        this._resource = Service.resource();
     }
 
     lista() {
@@ -15,7 +17,7 @@ export default class ProductService {
         return axios.get(this._resource + `/v1/product/${id}/history`);
     }
 
-    addHistory(id: number, history: any) {
+    addHistory(id: number, history: ProductHistoryInterface) {
         return axios.post(this._resource + `/v1/product/${id}/history`, {
             price: history.price,
             description: history.description,

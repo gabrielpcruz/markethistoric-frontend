@@ -18,5 +18,4 @@ app.use(BootstrapVue3)
 app.use(router);
 app.use(VueAxios, axios)
 
-
 app.mount('#app')

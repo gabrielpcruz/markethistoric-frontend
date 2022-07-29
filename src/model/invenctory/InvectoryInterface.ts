@@ -1,4 +1,4 @@
-export default interface Invenctory {
+export default interface InvectoryInterface {
     id: number,
     title: string,
     created_at: string,

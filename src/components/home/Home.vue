@@ -96,7 +96,7 @@ export default defineComponent({
           .then(invenctorys => this.invenctorys = invenctorys.data);
     },
 
-    deletar(dados: any, invenctory: Invenctory) {
+    deletar(dados: Event, invenctory: Invenctory) {
       this.inventoryService.delete(invenctory.id).then(() => {
         this.invenctorys.splice(
             this.invenctorys.indexOf(invenctory),

@@ -1,4 +1,4 @@
-export default interface InvenctoryListItem {
+export default interface InvenctoryListInterface {
     id: number,
     title: string,
     created_at: string,

@@ -1,13 +1,13 @@
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 
-import Invenctory from "@/model/invenctory/InvectoryInterface";
-import InvenctoryServiceInterface from "@/domain/InventoryServiceInterface";
+import Service from "@/domain/Service";
+import InvenctoryAddInterface from "@/model/invenctory/InvectoryAddInterface";
 
-export default class InvenctoryService implements InvenctoryServiceInterface {
+export default class InvenctoryService {
     _resource : string;
 
     constructor() {
-        this._resource = 'https://markethistoric.herokuapp.com';
+        this._resource = Service.resource();
     }
 
     get(id: number) {
@@ -18,17 +18,17 @@ export default class InvenctoryService implements InvenctoryServiceInterface {
         return axios.get(this._resource + `/v1/invenctory`);
     }
 
-    add(title: string, products: any) {
+    add(title: string, products: []) {
         return axios.post(this._resource + `/v1/invenctory`, {
             name: title,
             products: products
         });
     }
 
-    update(id: number, product: any) {
+    update(id: number, invenctoryInfo: InvenctoryAddInterface) {
         return axios.put(this._resource + `/v1/invenctory/${id}`, {
-            name: product.name,
-            products: product.products
+            name: invenctoryInfo.name,
+            products: invenctoryInfo.products
         });
     }
 

@@ -1,10 +1,11 @@
 import axios from "axios";
+import Service from "@/domain/Service";
 
 export default class CartService {
     private readonly _resource: string;
 
     constructor() {
-        this._resource = 'https://markethistoric.herokuapp.com';
+        this._resource = Service.resource();
     }
 
     put(inventory_id: number) {

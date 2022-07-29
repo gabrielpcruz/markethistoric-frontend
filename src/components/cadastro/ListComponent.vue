@@ -43,6 +43,7 @@ import CartService from "@/domain/CartService";
 
 import History from "../shared/history/History.vue";
 import InvenctoryListItem from '@/model/invenctory/InvectoryListInterface';
+import { AxiosResponse } from 'axios';
 
 export default defineComponent({
   name: 'ListComponent',
@@ -99,7 +100,7 @@ export default defineComponent({
       const id = parseInt(this.invenctory_id);
 
       this.inventoryService.details(id)
-          .then((data: any) => this.invenctory_product = data.data);
+          .then((data: AxiosResponse) => this.invenctory_product = data.data);
     },
   },
 
