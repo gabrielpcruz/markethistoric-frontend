@@ -42,7 +42,7 @@ import InvenctoryService from "@/domain/InvenctoryService";
 import CartService from "@/domain/CartService";
 
 import History from "../shared/history/History.vue";
-import InvenctoryListItem from '@/model/invenctory/InvectoryListInterface';
+import InvenctoryListInterface from '@/model/invenctory/InvenctoryListInterface';
 import { AxiosResponse } from 'axios';
 
 export default defineComponent({
@@ -62,7 +62,7 @@ export default defineComponent({
   },
   data() {
     return {
-      invenctory_product: [] as InvenctoryListItem[],
+      invenctory_product: [] as InvenctoryListInterface[],
       inventoryService: new InvenctoryService(),
       cartService: new CartService(),
       invenctory_id: this.id || '0',
@@ -79,7 +79,7 @@ export default defineComponent({
       return parseInt(isOnCart) ? 'btn-secondary' : 'btn-light';
     },
 
-    addRemoveCart(inventory_product: InvenctoryListItem) {
+    addRemoveCart(inventory_product: InvenctoryListInterface) {
       const index = this.invenctory_product.indexOf(inventory_product);
       let invenctory = this.invenctory_product[index];
 
