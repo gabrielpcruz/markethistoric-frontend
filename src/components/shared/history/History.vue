@@ -23,11 +23,13 @@
 import { defineComponent } from 'vue';
 
 import ProductService from "../../../domain/ProductService";
-import {BModal} from "bootstrap-vue-3";
+import { BModal } from "bootstrap-vue-3";
 
 export default defineComponent({
   name: 'HistoryComponent',
-  components: {BModal},
+  components: {
+    BModal
+  },
   props: {
     product_id: {
       type: Number,
@@ -47,7 +49,7 @@ export default defineComponent({
       product_history: [],
       historyDescription: '',
       historyPrice: '',
-      productService: new ProductService()
+      productService: new ProductService(),
     }
   },
   computed: {
@@ -74,7 +76,13 @@ export default defineComponent({
           })
     },
     add() {
-      const description = this.historyDescription;
+      if (!this.historyPrice) {
+        this.$swal('Erro ao adicionar histórico!', "Por favor, informe ao menos o valor.", 'error');
+
+        return false;
+      }
+
+      const description = this.historyDescription || 'Sem descrição';
       const price = this.historyPrice;
 
       const history = {

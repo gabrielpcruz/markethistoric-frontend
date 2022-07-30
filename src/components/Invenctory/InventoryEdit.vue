@@ -46,19 +46,12 @@ import ProductInventory from "@/model/product/ProductInventoryInterface";
 export default defineComponent({
   name: "InventoryEdit",
 
-  props: {
-    id: {
-      type: Number,
-      required: true
-    }
-  },
-
   data() {
     return {
       listName: "",
       product_list: [],
       invenctory_products: [],
-      invenctory_id: this.id,
+      invenctory_id: this.$route.params.id as string || '0',
       selecionados: [] as number[],
       inventoryService: new InvenctoryService(),
       productService: new ProductService()
@@ -67,10 +60,12 @@ export default defineComponent({
 
   methods: {
     atualizar() {
+      const invenctory_id = parseInt(this.invenctory_id);
+
       const listName = this.listName;
       const selecionados = this.selecionados;
 
-      this.inventoryService.update(this.id, {
+      this.inventoryService.update(invenctory_id, {
         name: listName,
         products: selecionados
       }).then(() => this.$router.replace('/'));
@@ -78,7 +73,7 @@ export default defineComponent({
   },
 
   created() {
-    const invenctory_id = this.invenctory_id;
+    const invenctory_id = parseInt(this.invenctory_id);
 
     this.inventoryService
         .get(invenctory_id)

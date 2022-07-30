@@ -42,7 +42,7 @@ export default defineComponent({
     routeList() {
       let routes = [] as object[];
 
-      router.getRoutes().forEach(function (route, index) {
+      router.getRoutes().forEach(function (route) {
         if (route.meta.isMenu) {
           routes.push(route);
         }
