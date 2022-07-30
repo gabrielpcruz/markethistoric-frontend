@@ -44,7 +44,7 @@ import ProductService from "@/domain/ProductService";
 import ProductInventory from "@/model/product/ProductInventoryInterface";
 
 export default defineComponent({
-  name: "EditComponent",
+  name: "InventoryEdit",
 
   props: {
     id: {

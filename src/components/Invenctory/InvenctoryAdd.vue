@@ -39,12 +39,13 @@
 <script>
 import ProductService from "../../domain/ProductService";
 import InvenctoryService from "../../domain/InvenctoryService";
+import router from "@/router";
 
 export default {
     props: {
         id: Number,
     },
-    name: "AddComponent",
+    name: "InvenctoryAdd",
 
     data() {
         return {
@@ -62,7 +63,7 @@ export default {
             const selecionados = this.selecionados;
 
             this.inventoryService.add(listName, selecionados)
-                .then(() => this.$router.replace('/'));
+                .then(() => router.push('/'));
         },
 
         listar() {

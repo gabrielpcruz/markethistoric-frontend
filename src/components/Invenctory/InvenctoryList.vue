@@ -46,15 +46,11 @@ import InvenctoryListInterface from '@/model/invenctory/InvenctoryListInterface'
 import { AxiosResponse } from 'axios';
 
 export default defineComponent({
-  name: 'ListComponent',
+  name: 'InvenctoryList',
   components: {
     History,
   },
   props: {
-    id: {
-      type: String,
-      required: false
-    },
     title: {
       type: String,
       required: false
@@ -65,7 +61,7 @@ export default defineComponent({
       invenctory_product: [] as InvenctoryListInterface[],
       inventoryService: new InvenctoryService(),
       cartService: new CartService(),
-      invenctory_id: this.id || '0',
+      invenctory_id: this.$route.params.id as string || '0',
       invenctory_title: this.title || ''
     }
   },
@@ -93,7 +89,7 @@ export default defineComponent({
             .then(() => this.list())
       }
 
-      this.$router.replace('/list');
+      this.$router.replace('invenctory_list');
     },
 
     list() {
