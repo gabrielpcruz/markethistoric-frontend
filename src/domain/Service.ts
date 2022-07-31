@@ -1,5 +1,5 @@
 export default class Service {
     static resource() {
-        return 'https://markethistoric.herokuapp.com';
+        return 'https://markethistorybackend.gabrielcruz.com.br';
     }
 }
